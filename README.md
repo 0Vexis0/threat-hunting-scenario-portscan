@@ -52,6 +52,18 @@ DeviceNetworkEvents
 
 <img width="1859" height="695" alt="image" src="https://github.com/user-attachments/assets/6645573a-b365-48ae-af0b-b508300e07f6" />
 
+Query used to locate events:
+
+DeviceNetworkEvents
+| where DeviceName == "cybernecromancy"
+| where ActionType == "ConnectionFailed"
+| where RemotePort in (21,22,23,25,53,69,80,110,123,135,137,138,139,143,161,194,443,445,465,587,993,995,3306,3389,5900,8080,8443)
+| summarize ConnectionCount = count() by DeviceName, LocalIP, RemotePort
+| order by ConnectionCount desc
+
+<img width="869" height="655" alt="image" src="https://github.com/user-attachments/assets/33ea319a-fd04-409e-9e23-dd2551c5cb8c" />
+
+
 Further actions taken
 -----
 I maneuvered toward the DeviceProcessEvents table to see if I could see anything that was unusual around the time the port scan started. I noticed a powershell named portscan.ps1 script launching at (2025-12-22T03:23:00Z)

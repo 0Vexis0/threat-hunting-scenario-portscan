@@ -225,18 +225,7 @@ Defender telemetry enables clear correlation between network and process events
 
 Even internally generated scripts must be treated as potentially malicious without proper authorization
 
-📁 Suggested Repository Structure
-├── README.md
-├── queries/
-│   ├── network_detection.kql
-│   ├── process_correlation.kql
-├── scripts/
-│   └── portscan.ps1
-├── timeline/
-│   └── incident_timeline.md
-└── mitre/
-    └── attack_mapping.md
-
+----
 🏁 Conclusion
 
 This project demonstrates an end-to-end threat hunting workflow using Microsoft Defender for Endpoint—moving from anomaly detection, to telemetry correlation, to host investigation, and finally containment. It highlights how legitimate tools and accounts can be leveraged for malicious activity and why behavioral analysis is critical in modern SOC operations.

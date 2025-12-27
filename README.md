@@ -5,7 +5,7 @@ Scenario
 Management was notified of unusual internal network activity after security monitoring identified a high volume of failed connection attempts originating from the host cybernecromancy. The connection failures were observed in a sequential port order and targeted both the originating system and another host on the same network, indicating automated network service discovery rather than normal user behavior. Further analysis correlated this activity with the execution of a PowerShell script named portscan.ps1, which was launched at 2025‑12‑22 03:23 UTC under the local account cybermaster. Review of the script confirmed it was configured to scan multiple internal IP addresses across a wide range of common service ports. As this behavior was not authorized or expected for the system, the device was quarantined and an antivirus scan was initiated. Findings were documented and escalated to management for review and risk assessment.
 
 
-
+## Scenario creation
 
 
 

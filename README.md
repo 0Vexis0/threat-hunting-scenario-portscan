@@ -70,7 +70,7 @@ DeviceNetworkEvents
 
 Further actions taken
 -----
-I maneuvered toward the DeviceProcessEvents table to see if I could see anything that was unusual around the time the port scan started. I noticed a powershell named portscan.ps1 script launching at (2025-12-22T03:23:00Z)
+I maneuvered toward the DeviceProcessEvents table to see if I could catch anything that was unusual around the time the port scan started. I noticed a powershell named portscan.ps1 script launching at (2025-12-22T03:23:00Z)
 ----
 
 

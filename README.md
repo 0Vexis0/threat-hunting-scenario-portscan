@@ -11,6 +11,14 @@ Management was notified of unusual internal network activity after security moni
 
 # threat-hunting-scenario-portscan
 
+High‑Level Port Scan–Related IoC Discovery Plan
+
+Check DeviceNetworkEvents for repeated failed connection attempts and sequential destination ports, which may indicate automated network service discovery or port scanning behavior.
+
+Check DeviceProcessEvents for execution of PowerShell or scripting activity (e.g., .ps1 files) occurring around the time of the network anomalies, with particular focus on scripts or command lines referencing scanning behavior.
+
+Check DeviceFileEvents for the creation, modification, or execution of custom scanning scripts and related log files (e.g., portscan.ps1, entropygorilla.log) that may support or confirm malicious or unauthorized reconnaissance activity.
+
 🚨 PowerShell Port Scan Detection & Response
 
 Threat Hunting Case Study (Microsoft Defender for Endpoint)
@@ -18,6 +26,97 @@ Threat Hunting Case Study (Microsoft Defender for Endpoint)
 📌 Overview
 
 This repository documents the identification, investigation, and response to suspicious PowerShell-based port scanning activity detected within a controlled virtual environment using Microsoft Defender for Endpoint (MDE). The activity originated from a host named cybernecromancy and was executed under a valid local account, indicating potential misuse of trusted credentials.
+
+Steps taken 
+-----
+Query used to locate events:
+
+DeviceNetworkEvents
+| where DeviceName == "cybernecromancy"
+| where ActionType == "ConnectionFailed"
+| summarize ConnectionCount = count() by DeviceName, ActionType, LocalIP
+| order by ConnectionCount
+
+
+<img width="961" height="297" alt="image" src="https://github.com/user-attachments/assets/dd5ad86f-94d3-449b-b7af-1854ee561b9e" />
+
+Query used to locate events:
+
+// Observe all failed connections for the IP in question. Notice anything?
+let IPInQuestion = "10.0.0.136";
+DeviceNetworkEvents
+| where ActionType == "ConnectionFailed"
+| where LocalIP == IPInQuestion
+| order by Timestamp desc
+
+
+<img width="1859" height="695" alt="image" src="https://github.com/user-attachments/assets/6645573a-b365-48ae-af0b-b508300e07f6" />
+
+Further actions taken
+-----
+I maneuvered toward the DeviceProcessEvents table to see if I could see anything that was unusual around the time the port scan started. I noticed a powershell named portscan.ps1 script launching at (2025-12-22T03:23:00Z)
+----
+
+
+I logged into the suspected device and observed the powershell script that was used to conduct the portscan:
+
+
+
+
+
+
+# Define the log file path
+$logFile = "C:\ProgramData\entropygorilla.log"
+$scriptName = "portscan.ps1"
+
+
+# Function to log messages
+function Log-Message {
+    param (
+        [string]$message,
+        [string]$level = "INFO"
+    )
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "$timestamp [$level] [$scriptName] $message"
+    Add-Content -Path $logFile -Value $logEntry
+}
+
+
+# Define the range of IP addresses to scan
+$startIP = 4
+$endIP = 10
+$baseIP = "10.0.0."
+
+
+# Expanded list of common ports (well-known port numbers 0-1023 + some higher)
+$commonPorts = @(21, 22, 23, 25, 53, 69, 80, 110, 123, 135, 137, 138, 139, 143, 161, 194, 443, 445, 465, 587, 993, 995, 3306, 3389, 5900, 8080, 8443)
+
+
+
+
+I observed the port scan script was launched by the machine cybernecromancy,account name cybermaster. This is not usual behavior, I quarantined the device and ran a antivirus scan.
+
+<img width="669" height="511" alt="image" src="https://github.com/user-attachments/assets/3347a4fb-60c7-424d-a5b4-519483bd41ad" />
+
+Query used to locate events:
+
+// Observe DeviceProcessEvents for the past 10 minutes of the unusual activity found
+let VMName = "cybernecromancy";
+let specificTime = datetime(2025-12-22T03:23:00Z);
+DeviceProcessEvents
+| where Timestamp between ((specificTime - 10m) .. (specificTime + 10m))
+| where DeviceName == VMName
+| where InitiatingProcessCommandLine contains "portscan"
+| order by Timestamp desc
+| project Timestamp, FileName, InitiatingProcessCommandLine, AccountName
+
+
+<img width="992" height="180" alt="image" src="https://github.com/user-attachments/assets/cddc30a5-1e32-4a15-aa76-4af2b0bdc62b" />
+
+
+
+
+
 
 🧭 Timeline Summary
 1. Initial Detection – Network Anomalies

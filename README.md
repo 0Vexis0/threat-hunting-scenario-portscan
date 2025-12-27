@@ -241,4 +241,12 @@ Even internally generated scripts must be treated as potentially malicious witho
 
 This project demonstrates an end-to-end threat hunting workflow using Microsoft Defender for Endpoint—moving from anomaly detection, to telemetry correlation, to host investigation, and finally containment. It highlights how legitimate tools and accounts can be leveraged for malicious activity and why behavioral analysis is critical in modern SOC operations.
 
+MITRE ATT&CK Correlated Techniques
+----
+
+
+T1046      – Network Service Discovery
+T1059.001  – Command and Scripting Interpreter: PowerShell
+TA004      – Privilege Escalation
+T1078.003  – Valid Accounts: Local Accounts
 

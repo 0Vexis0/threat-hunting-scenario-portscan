@@ -29,7 +29,7 @@ This repository documents the identification, investigation, and response to sus
 
 Steps taken 
 -----
-Query used to locate events:
+Query used to locate Device Network events:
 ```kql
 DeviceNetworkEvents
 | where DeviceName == "cybernecromancy"
@@ -113,7 +113,7 @@ I observed the port scan script was launched by the machine cybernecromancy,acco
 
 <img width="669" height="511" alt="image" src="https://github.com/user-attachments/assets/3347a4fb-60c7-424d-a5b4-519483bd41ad" />
 
-Query used to locate events:
+Query used to locate Device Process events:
 
 ```kql
 // Observe DeviceProcessEvents for the past 10 minutes of the unusual activity found
@@ -130,7 +130,17 @@ DeviceProcessEvents
 
 <img width="992" height="180" alt="image" src="https://github.com/user-attachments/assets/cddc30a5-1e32-4a15-aa76-4af2b0bdc62b" />
 
+Query used to locate Device File Events:
 
+```kql
+// Summarize file events containing "portscan" on the device
+DeviceFileEvents
+| where DeviceName == "cybernecromancy"
+| where FileName contains "portscan"
+| summarize FileEventCount = count() by DeviceName, FileName, FolderPath
+| order by FileEventCount desc
+```
+<img width="991" height="453" alt="image" src="https://github.com/user-attachments/assets/78a16307-0415-45ac-ba39-065efcc02c91" />
 
 
 

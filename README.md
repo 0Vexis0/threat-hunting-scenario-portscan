@@ -241,12 +241,4 @@ Even internally generated scripts must be treated as potentially malicious witho
 
 This project demonstrates an end-to-end threat hunting workflow using Microsoft Defender for Endpoint—moving from anomaly detection, to telemetry correlation, to host investigation, and finally containment. It highlights how legitimate tools and accounts can be leveraged for malicious activity and why behavioral analysis is critical in modern SOC operations.
 
-If you want, I can:
 
-Break this into multiple repo files
-
-Rewrite it to match WGU project rubric language
-
-Add a non-technical executive summary
-
-Align it for resume or portfolio presentation

@@ -30,36 +30,39 @@ This repository documents the identification, investigation, and response to sus
 Steps taken 
 -----
 Query used to locate events:
-
+```kql
 DeviceNetworkEvents
 | where DeviceName == "cybernecromancy"
 | where ActionType == "ConnectionFailed"
 | summarize ConnectionCount = count() by DeviceName, ActionType, LocalIP
 | order by ConnectionCount
 
+```
 
 <img width="961" height="297" alt="image" src="https://github.com/user-attachments/assets/dd5ad86f-94d3-449b-b7af-1854ee561b9e" />
 
 Query used to locate events:
-
+```kql
 // Observe all failed connections for the IP in question. Notice anything?
 let IPInQuestion = "10.0.0.136";
 DeviceNetworkEvents
 | where ActionType == "ConnectionFailed"
 | where LocalIP == IPInQuestion
 | order by Timestamp desc
+```
 
 
 <img width="1859" height="695" alt="image" src="https://github.com/user-attachments/assets/6645573a-b365-48ae-af0b-b508300e07f6" />
 
 Query used to locate events:
-
+```kql
 DeviceNetworkEvents
 | where DeviceName == "cybernecromancy"
 | where ActionType == "ConnectionFailed"
 | where RemotePort in (21,22,23,25,53,69,80,110,123,135,137,138,139,143,161,194,443,445,465,587,993,995,3306,3389,5900,8080,8443)
 | summarize ConnectionCount = count() by DeviceName, LocalIP, RemotePort
 | order by ConnectionCount desc
+```
 
 <img width="869" height="655" alt="image" src="https://github.com/user-attachments/assets/33ea319a-fd04-409e-9e23-dd2551c5cb8c" />
 
@@ -112,6 +115,7 @@ I observed the port scan script was launched by the machine cybernecromancy,acco
 
 Query used to locate events:
 
+```kql
 // Observe DeviceProcessEvents for the past 10 minutes of the unusual activity found
 let VMName = "cybernecromancy";
 let specificTime = datetime(2025-12-22T03:23:00Z);
@@ -121,6 +125,7 @@ DeviceProcessEvents
 | where InitiatingProcessCommandLine contains "portscan"
 | order by Timestamp desc
 | project Timestamp, FileName, InitiatingProcessCommandLine, AccountName
+```
 
 
 <img width="992" height="180" alt="image" src="https://github.com/user-attachments/assets/cddc30a5-1e32-4a15-aa76-4af2b0bdc62b" />

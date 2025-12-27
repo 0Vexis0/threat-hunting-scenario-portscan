@@ -1,0 +1,25 @@
+Threat Event (Unauthorized Network Reconnaissance)
+
+PowerShell-Based Internal Port Scanning Activity
+
+Environment Preparation (Defender Onboarding)
+
+Before any suspicious activity occurred, the workstation cybernecromancy was properly onboarded into Microsoft Defender for Endpoint (MDE) to ensure full telemetry collection. The onboarding was performed as part of a controlled lab environment to capture realistic process, file, and network events for analysis.
+
+Simulated Adversary Activity (Log & IoC Generation)
+
+After onboarding was complete, a simulated unauthorized activity was performed to generate detectable indicators:
+
+A valid local user account (cybermaster) logged into the device.
+
+A custom PowerShell script named portscan.ps1 was present on the system.
+
+The script was executed to perform internal network scanning against hosts in the 10.0.0.0/24 range.
+
+The script attempted connections to multiple common and well-known service ports in sequential order.
+
+Repeated failed connection attempts were generated against both the local system and another internal host.
+
+Scan activity was logged locally to C:\ProgramData\entropygorilla.log.
+
+The activity produced abnormal network, process, and file telemetry suitable for threat hunting validation

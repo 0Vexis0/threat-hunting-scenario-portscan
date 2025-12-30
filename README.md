@@ -1,4 +1,5 @@
-<img width="667" height="329" alt="image" src="https://github.com/user-attachments/assets/e825a280-78cc-4a99-a921-ccc4d01fcb17" />
+
+<img width="584" height="382" alt="image" src="https://github.com/user-attachments/assets/8e22686e-b39e-42b2-808a-a9d97093368e" />
 
 Scenario
 ------
